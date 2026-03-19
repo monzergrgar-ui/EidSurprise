@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Surprise for Mody</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff9c4; /* Light Gold/Yellow */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 400px;
+            border: 2px solid #fbc02d;
+        }
+
+        h1 { color: #f57f17; margin-bottom: 10px; }
+        p { color: #bf360c; font-size: 1.2rem; }
+
+        .btn-container {
+            margin-top: 30px;
+            position: relative;
+            height: 100px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: absolute;
+        }
+
+        #yesBtn {
+            background-color: #ffd600;
+            color: #333;
+            font-weight: bold;
+            left: 50px;
+        }
+
+        #noBtn {
+            background-color: #eeeeee;
+            color: #9e9e9e;
+            right: 50px;
+        }
+
+        .hidden { display: none; }
+
+        .success-msg {
+            font-size: 1.5rem;
+            color: #e65100;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <div id="questionSection">
+            <h1>عيدك مبارك يا مودي! ✨🌙</h1>
+            <p>Will you be my guest for a special Eid outing?</p>
+            
+            <div class="btn-container">
+                <button id="yesBtn">Of course! ✨</button>
+                <button id="noBtn">No way</button>
+            </div>
+        </div>
+
+        <div id="successSection" class="hidden">
+            <h1 style="font-size: 3rem;">🌟🌙🍬</h1>
+            <p class="success-msg">Yay! Best Eid ever, مودي!</p>
+            <p>I'll see you very soon. ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const questionSection = document.getElementById('questionSection');
+        const successSection = document.getElementById('successSection');
+
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        });
+
+        yesBtn.addEventListener('click', () => {
+            questionSection.classList.add('hidden');
+            successSection.classList.remove('hidden');
+            
+            var duration = 4 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+            }, 250);
+        });
+    </script>
+</body>
+</html>
