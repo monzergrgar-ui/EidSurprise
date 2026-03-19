@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Surprise for Nada</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; background-color: #fce4ec; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; text-align: center;
+        }
+        #card {
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 85%; max-width: 400px;
+            border: 3px solid #f06292;
+        }
+        .btn-container { margin-top: 40px; position: relative; height: 150px; }
+        
+        button {
+            padding: 12px 25px; font-size: 1rem; border: none;
+            border-radius: 50px; cursor: pointer; transition: 0.3s;
+            font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .yes-style { background-color: #f06292; color: white; position: absolute; }
+        #noBtn { background-color: #f5f5f5; color: #9e9e9e; position: absolute; left: 50%; transform: translateX(-50%); }
+        
+        .hidden { display: none; }
+        
+        #loader { width: 100%; background: #eee; border-radius: 10px; margin: 20px 0; height: 15px;}
+        #bar { width: 0%; height: 100%; background: #f06292; border-radius: 10px; transition: width 3s linear; }
+
+        /* Interactive Certificate */
+        .certificate {
+            background: #fff9c4; border: 5px double #fbc02d;
+            padding: 20px; border-radius: 10px; transform: rotate(-1deg);
+            cursor: pointer; transition: 0.5s; position: relative;
+        }
+        .certificate:hover { transform: scale(1.05) rotate(0deg); }
+        
+        #secretNote {
+            background: #fff; border: 2px dashed #f06292;
+            padding: 10px; margin-top: 15px; border-radius: 10px;
+            color: #d81b60; font-style: italic; animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <div id="page1">
+            <h1>عيد مبارك يا ندى! 🌙✨</h1> 
+            <p>Ready to claim your "Top Language Student" Eidiya?</p>
+            <div class="btn-container" id="mainContainer">
+                <button id="yesBtn" class="yes-style" style="top: 0; left: 20px;">YES! 🏅</button>
+                <button id="noBtn">Nah 🙄</button>
+            </div>
+        </div>
+
+        <div id="page2" class="hidden">
+            <h2 id="loadingText" style="color: #f06292;">Scanning IQ... 🧠</h2>
+            <p id="subText">Checking English & Chinese levels...</p>
+            <div id="loader"><div id="bar"></div></div>
+        </div>
+
+        <div id="page3" class="hidden">
+            <p style="font-size: 0.8rem; color: #888;">(Tap the certificate for a secret message!)</p>
+            <div class="certificate" id="cert">
+                <h2 style="color: #bf360c;">CERTIFICATE 📜</h2>
+                <p><b>Nada</b> is officially the Smartest Language Student!</p>
+                <p><b>Prize:</b> 1 Coffee + 200 EGP Eidiya!</p>
+                <h1 style="font-size: 1.5rem;">💸🥤🏮</h1>
+                
+                <div id="secretNote" class="hidden">
+                    "Happy Eid, Nada! May your Chinese be as fluent as your English, and your coffee always be free. 😉"
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px;">Now, send this to Al-Munther!</p>
+            <button onclick="window.open('https://wa.me/201556276209?text=I%20claimed%20my%20Language%20Genius%20Eidiya%21%20Where%20is%20my%20coffee?')" style="background: #25d366; color: white;">WhatsApp Me! ✅</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const container = document.getElementById('mainContainer');
+        const p1 = document.getElementById('page1');
+        const p2 = document.getElementById('page2');
+        const p3 = document.getElementById('page3');
+        const bar = document.getElementById('bar');
+        const loadText = document.getElementById('loadingText');
+        const cert = document.getElementById('cert');
+        const secretNote = document.getElementById('secretNote');
+        
+        let yesCount = 1;
+
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            if (yesCount < 6) {
+                const newYes = document.createElement('button');
+                newYes.innerHTML = "YES! 🏅";
+                newYes.className = "yes-style";
+                newYes.style.left = (Math.random() * 150) + "px";
+                newYes.style.top = (Math.random() * 100) + "px";
+                newYes.onclick = startProcess;
+                container.appendChild(newYes);
+                yesCount++;
+            }
+        });
+
+        function startProcess() {
+            p1.classList.add('hidden');
+            p2.classList.remove('hidden');
+            noBtn.style.display = 'none';
+            setTimeout(() => { bar.style.width = "100%"; }, 100);
+            setTimeout(() => { loadText.innerHTML = "Calculating in Chinese... 🏮"; }, 1000);
+            setTimeout(() => { loadText.innerHTML = "Finalizing in English... 💂"; }, 2000);
+            setTimeout(() => {
+                p2.classList.add('hidden');
+                p3.classList.remove('hidden');
+                celebrate();
+            }, 3500);
+        }
+
+        // Secret message trigger
+        cert.onclick = () => {
+            secretNote.classList.toggle('hidden');
+        };
+
+        function celebrate() {
+            var end = Date.now() + (4 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#f06292', '#ffffff'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#f06292', '#ffffff'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+
+        document.getElementById('yesBtn').onclick = startProcess;
+    </script>
+</body>
+</html>
