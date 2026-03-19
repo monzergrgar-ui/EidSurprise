@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Surprise for Bibo</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; background-color: #e0f2f1;
+            font-family: sans-serif; overflow: hidden; text-align: center;
+        }
+        #card {
+            background: white; padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 85%; max-width: 400px;
+            border: 2px solid #009688;
+        }
+        .btn-container { margin-top: 50px; position: relative; height: 180px; }
+        
+        button {
+            padding: 12px 25px; font-size: 1rem; border: none;
+            border-radius: 10px; cursor: pointer; transition: 0.2s;
+            font-weight: bold;
+        }
+
+        .yes-style { background-color: #009688; color: white; position: absolute; }
+        #noBtn { background-color: #ffab91; color: #bf360c; position: absolute; left: 50%; transform: translateX(-50%); }
+        
+        .hidden { display: none; }
+        
+        /* Loading Bar Styles */
+        #loader { width: 100%; background: #ddd; border-radius: 10px; margin: 20px 0; }
+        #bar { width: 0%; height: 20px; background: #009688; border-radius: 10px; transition: width 2s; }
+
+        .eidiya-amount { font-size: 2.5rem; color: #d81b60; font-weight: bold; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <div id="questionSection">
+            <h1>عيد مبارك يا بيبو! 🌙✨</h1> 
+            <p>Will you be my guest for Eid?</p>
+            
+            <div class="btn-container" id="mainContainer">
+                <button id="yesBtn" class="yes-style" style="top: 0; left: 20px;">YES! 😍</button>
+                <button id="noBtn">No 😢</button>
+            </div>
+        </div>
+
+        <div id="loadingSection" class="hidden">
+            <h2>Calculating your Eidiya... 💸</h2>
+            <div id="loader"><div id="bar"></div></div>
+        </div>
+
+        <div id="successSection" class="hidden">
+            <h1>🎉 YAY! 🎉</h1>
+            <p>You just won an Eidiya of:</p>
+            <div class="eidiya-amount">500 EGP 💸</div>
+            <p>I knew you'd say YES, بيبو! ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const container = document.getElementById('mainContainer');
+        const questionSection = document.getElementById('questionSection');
+        const loadingSection = document.getElementById('loadingSection');
+        const successSection = document.getElementById('successSection');
+        const bar = document.getElementById('bar');
+        
+        let yesCount = 1;
+
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            if (yesCount < 6) {
+                const newYes = document.createElement('button');
+                newYes.innerHTML = "YES! ✨";
+                newYes.className = "yes-style";
+                newYes.style.left = (Math.random() * 200) + "px";
+                newYes.style.top = (Math.random() * 120) + "px";
+                newYes.style.transform = `scale(${1 + (yesCount * 0.2)})`;
+                newYes.onclick = startLoading;
+                container.appendChild(newYes);
+                yesCount++;
+            }
+        });
+
+        function startLoading() {
+            questionSection.classList.add('hidden');
+            loadingSection.classList.remove('hidden');
+            noBtn.style.display = 'none';
+            
+            setTimeout(() => { bar.style.width = "100%"; }, 100);
+
+            setTimeout(() => {
+                loadingSection.classList.add('hidden');
+                successSection.classList.remove('hidden');
+                celebrate();
+            }, 2500);
+        }
+
+        function celebrate() {
+            var end = Date.now() + (3 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+
+        document.getElementById('yesBtn').onclick = startLoading;
+    </script>
+</body>
+</html>
