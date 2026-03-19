@@ -32,13 +32,11 @@
         #loader { width: 100%; background: #eee; border-radius: 10px; margin: 20px 0; height: 15px;}
         #bar { width: 0%; height: 100%; background: #f06292; border-radius: 10px; transition: width 3s linear; }
 
-        /* Interactive Certificate */
         .certificate {
             background: #fff9c4; border: 5px double #fbc02d;
             padding: 20px; border-radius: 10px; transform: rotate(-1deg);
             cursor: pointer; transition: 0.5s; position: relative;
         }
-        .certificate:hover { transform: scale(1.05) rotate(0deg); }
         
         #secretNote {
             background: #fff; border: 2px dashed #f06292;
@@ -81,7 +79,7 @@
             </div>
             
             <p style="margin-top: 20px;">Now, send this to Al-Munther!</p>
-            <button onclick="window.open('https://wa.me/201556276209?text=I%20claimed%20my%20Language%20Genius%20Eidiya%21%20Where%20is%20my%20coffee?')" style="background: #25d366; color: white;">WhatsApp Me! ✅</button>
+            <button onclick="window.open('https://wa.me/201152105763?text=I%20claimed%20my%20Language%20Genius%20Eidiya%21%20Where%20is%20my%20coffee?')" style="background: #25d366; color: white;">WhatsApp Al-Munther! ✅</button>
         </div>
     </div>
 
@@ -131,10 +129,7 @@
             }, 3500);
         }
 
-        // Secret message trigger
-        cert.onclick = () => {
-            secretNote.classList.toggle('hidden');
-        };
+        cert.onclick = () => { secretNote.classList.toggle('hidden'); };
 
         function celebrate() {
             var end = Date.now() + (4 * 1000);
